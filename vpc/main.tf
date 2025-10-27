@@ -1,44 +1,81 @@
-provider "aws" {
-  region = var.aws_region
+#####################################
+# 1. Provider
+#####################################
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.0"
+    }
+  }
 }
 
-resource "aws_vpc" "this" {
+provider "aws" {
+  region = var.region
+}
+
+#####################################
+# 2. VPC
+#####################################
+resource "aws_vpc" "main" {
   cidr_block           = var.vpc_cidr
   enable_dns_hostnames = true
   enable_dns_support   = true
 
   tags = {
-    Name = "${var.environment}-vpc"
-    Env  = var.environment
+    Name = "${var.project}-vpc"
   }
 }
 
-# Internet Gateway
+#####################################
+# 3. Internet Gateway
+#####################################
 resource "aws_internet_gateway" "igw" {
-  vpc_id = aws_vpc.this.id
+  vpc_id = aws_vpc.main.id
 
   tags = {
-    Name = "${var.environment}-igw"
+    Name = "${var.project}-igw"
   }
 }
 
-# Public subnets (2 AZ)
+#####################################
+# 4. Public Subnets
+#####################################
 resource "aws_subnet" "public" {
-  for_each = toset(var.public_subnets_cidrs)
+  count = length(var.public_subnets_cidrs)
 
-  vpc_id            = aws_vpc.this.id
-  cidr_block        = each.value
+  vpc_id                  = aws_vpc.main.id
+  cidr_block              = var.public_subnets_cidrs[count.index]
+  availability_zone       = element(var.azs, count.index)
   map_public_ip_on_launch = true
-  availability_zone = element(var.azs, index(keys(toset(var.public_subnets_cidrs)), 0)) == "" ? null : element(var.azs, index(keys(toset(var.public_subnets_cidrs)), 0))
+
   tags = {
-    Name = "${var.environment}-public-${each.value}"
+    Name = "${var.project}-public-subnet-${count.index + 1}"
     Tier = "public"
   }
 }
 
-# Simpler approach to ensure route table for public subnets
+#####################################
+# 5. Private Subnets
+#####################################
+resource "aws_subnet" "private" {
+  count = length(var.private_subnets_cidrs)
+
+  vpc_id            = aws_vpc.main.id
+  cidr_block        = var.private_subnets_cidrs[count.index]
+  availability_zone = element(var.azs, count.index)
+
+  tags = {
+    Name = "${var.project}-private-subnet-${count.index + 1}"
+    Tier = "private"
+  }
+}
+
+#####################################
+# 6. Public Route Table
+#####################################
 resource "aws_route_table" "public" {
-  vpc_id = aws_vpc.this.id
+  vpc_id = aws_vpc.main.id
 
   route {
     cidr_block = "0.0.0.0/0"
@@ -46,12 +83,30 @@ resource "aws_route_table" "public" {
   }
 
   tags = {
-    Name = "${var.environment}-public-rt"
+    Name = "${var.project}-public-rt"
   }
 }
 
-resource "aws_route_table_association" "public_assoc" {
-  for_each = aws_subnet.public
-  subnet_id      = each.value.id
+#####################################
+# 7. Public Route Table Association
+#####################################
+resource "aws_route_table_association" "public" {
+  count          = length(aws_subnet.public)
+  subnet_id      = aws_subnet.public[count.index].id
   route_table_id = aws_route_table.public.id
+}
+
+#####################################
+# 8. Outputs
+#####################################
+output "vpc_id" {
+  value = aws_vpc.main.id
+}
+
+output "public_subnets" {
+  value = aws_subnet.public[*].id
+}
+
+output "private_subnets" {
+  value = aws_subnet.private[*].id
 }
