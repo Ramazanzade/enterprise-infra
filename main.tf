@@ -7,14 +7,15 @@
 #####################################
 module "vpc" {
   source = "./vpc"
-
-  region        = var.region
-  project       = var.project
-  vpc_cidr      = var.vpc_cidr
-  azs           = var.azs
-  public_cidrs  = var.public_cidrs
-  private_cidrs = var.private_cidrs
+  region = var.region
+  project = var.project
+  vpc_cidr = var.vpc_cidr
+  public_subnets_cidrs  = var.public_subnets_cidrs
+  private_subnets_cidrs = var.private_subnets_cidrs
+  azs = var.azs
 }
+
+
 
 #####################################
 # 2. Security Modulunu Çağır
