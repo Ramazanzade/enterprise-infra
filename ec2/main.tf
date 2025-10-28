@@ -3,7 +3,7 @@
 #####################################
 resource "aws_key_pair" "main" {
   key_name   = "${var.project}-key"
-  public_key = file(var.public_key_path)
+  public_key = file(var.public_key_path)  # ⚡ artıq tam path istifadə olunur
 }
 
 #####################################

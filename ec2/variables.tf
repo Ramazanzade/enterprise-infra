@@ -1,6 +1,7 @@
 variable "project" {
   description = "Project name prefix"
   type        = string
+  default     = "enterprise"
 }
 
 variable "ami" {
@@ -16,9 +17,9 @@ variable "instance_type" {
 }
 
 variable "public_key_path" {
-  description = "Path to SSH public key"
+  description = "Path to SSH public key (tam path göstərilməlidir)"
   type        = string
-  default     = "~/.ssh/id_rsa.pub"
+  default     = "/home/broops/.ssh/id_rsa.pub"  # 🔑 tam path
 }
 
 variable "public_subnet_id" {
