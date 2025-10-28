@@ -2,6 +2,32 @@
 # Root level - main.tf
 ############################################
 
+#####################################
+# 1. VPC Modulunu Çağır
+#####################################
+module "vpc" {
+  source = "./vpc"
+
+  region        = var.region
+  project       = var.project
+  vpc_cidr      = var.vpc_cidr
+  azs           = var.azs
+  public_cidrs  = var.public_cidrs
+  private_cidrs = var.private_cidrs
+}
+
+#####################################
+# 2. Security Modulunu Çağır
+#####################################
+module "security" {
+  source = "./security"
+
+  vpc_id = module.vpc.vpc_id
+}
+
+#####################################
+# 3. EC2 Modulunu Çağır
+#####################################
 module "ec2" {
   source            = "./ec2"
   project           = var.project
