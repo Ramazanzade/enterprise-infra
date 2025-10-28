@@ -1,10 +1,6 @@
-#####################################
-# Security Groups
-#####################################
-
 resource "aws_security_group" "public" {
   name   = "${var.project}-public-sg"
-  vpc_id = var.vpc_id
+  vpc_id = var.vpc_id  # 🔑 burada istifadə olunur
 
   ingress {
     from_port   = 22
