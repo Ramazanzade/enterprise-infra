@@ -32,3 +32,5 @@ variable "public_key_path" {
   description = "Path to public SSH key"
   type        = string
 }
+
+variable "project" { description = "Project name prefix" type = string }
