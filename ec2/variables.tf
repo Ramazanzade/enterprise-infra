@@ -1,12 +1,11 @@
-variable "project" {
-  description = "Project name prefix"
+variable "ami" {
+  description = "Amazon Machine Image ID"
   type        = string
 }
 
 variable "instance_type" {
   description = "EC2 instance type"
   type        = string
-  default     = "t3.micro"
 }
 
 variable "public_subnet_id" {
@@ -30,12 +29,6 @@ variable "private_sg_id" {
 }
 
 variable "public_key_path" {
-  description = "Path to the public SSH key"
-  type        = string
-  default     = "/home/broops/.ssh/id_rsa.pub"
-}
-
-variable "ami" {
-  description = "Amazon Machine Image ID"
+  description = "Path to public SSH key"
   type        = string
 }
