@@ -34,3 +34,8 @@ variable "public_key_path" {
   type        = string
   default     = "/home/broops/.ssh/id_rsa.pub"
 }
+
+variable "ami" {
+  description = "Amazon Machine Image ID"
+  type        = string
+}
