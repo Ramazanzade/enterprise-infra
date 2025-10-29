@@ -34,6 +34,6 @@ variable "public_key_path" {
 }
 
 variable "project" {
-  description = "Project name prefix
+  description = "Project name prefix"
   type        = string
 }
