@@ -33,4 +33,7 @@ variable "public_key_path" {
   type        = string
 }
 
-variable "project" { description = "Project name prefix" type = string }
+variable "project" {
+  description = "Project name prefix
+  type        = string
+}
