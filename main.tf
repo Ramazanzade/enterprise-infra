@@ -35,5 +35,6 @@ module "ec2" {
   private_sg_id      = module.security.private_sg_id
   instance_type      = "t2.micro"
   public_key_path    = "~/.ssh/id_rsa.pub"
-  project            = var.project        
+  project            = var.project  
+  vpc_id             = module.vpc.vpc_id                  # ✅ module.vpc-dən gələn output      
 }
