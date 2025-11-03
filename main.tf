@@ -27,7 +27,7 @@ module "security" {
 
 #####################################
 module "ec2" {
-  source             = "./modules/ec2"
+  source             = "./ec2"
   project            = var.project
   vpc_id             = module.vpc.vpc_id           # ✅ yalnız burda
   public_subnet_id   = element(module.vpc.public_subnets, 0)
