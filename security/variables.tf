@@ -1,10 +1,9 @@
-variable "project" {
-  description = "Project name prefix"
+variable "vpc_id" {
+  description = "The ID of the VPC where security groups will be created"
   type        = string
-  default     = "enterprise"
 }
 
-variable "vpc_id" {
-  description = "VPC ID where security groups will be created"
+variable "project" {
+  description = "Project name prefix for tagging and naming"
   type        = string
 }
