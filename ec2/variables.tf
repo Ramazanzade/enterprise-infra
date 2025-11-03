@@ -1,17 +1,5 @@
-variable "region" {
-  description = "AWS region"
-  type        = string
-  default     = "eu-central-1"
-}
-
-variable "project" {
-  description = "Project name prefix"
-  type        = string
-  default     = "enterprise"
-}
-
 variable "vpc_id" {
-  description = "VPC ID where resources will be created"
+  description = "VPC ID where EC2 instances will be created"
   type        = string
 }
 
@@ -25,14 +13,24 @@ variable "private_subnet_id" {
   type        = string
 }
 
+variable "public_sg_id" {
+  description = "Public Security Group ID"
+  type        = string
+}
+
+variable "private_sg_id" {
+  description = "Private Security Group ID"
+  type        = string
+}
+
 variable "instance_type" {
-  description = "EC2 instance type (Free Tier uyumlu)"
+  description = "EC2 instance type"
   type        = string
   default     = "t2.micro"
 }
 
 variable "public_key_path" {
-  description = "Path to public SSH key"
+  description = "Path to SSH public key"
   type        = string
   default     = "~/.ssh/id_rsa.pub"
 }

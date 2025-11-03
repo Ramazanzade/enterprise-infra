@@ -26,16 +26,13 @@ module "security" {
 }
 
 #####################################
-# 3. EC2 Modulunu Çağır
-#####################################
 module "ec2" {
-  source            = "./ec2"
-  project           = var.project
-  ami               = "ami-0c7217cdde317cfec"
-  instance_type     = "t2.micro"
-  public_key_path   = "/home/broops/.ssh/id_rsa.pub"  # ⚡ tam path
-  public_subnet_id  = module.vpc.public_subnets[0]
-  private_subnet_id = module.vpc.private_subnets[0]
-  public_sg_id      = module.security.public_sg_id
-  private_sg_id     = module.security.private_sg_id
+  source             = "./ec2"
+  vpc_id             = aws_vpc.main.id
+  public_subnet_id   = element(aws_subnet.public.*.id, 0)
+  private_subnet_id  = element(aws_subnet.private.*.id, 0)
+  public_sg_id       = module.security.public_sg_id
+  private_sg_id      = module.security.private_sg_id
+  instance_type      = "t2.micro"
+  public_key_path    = "~/.ssh/id_rsa.pub"
 }
