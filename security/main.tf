@@ -2,7 +2,7 @@
 # 1. Public Security Group
 #####################################
 resource "aws_security_group" "public" {
-  name        = "${var.project}-public-sg"
+  name        = "${var.project}-public-sg-test"
   description = "Allow SSH, HTTP, HTTPS access from anywhere"
   vpc_id      = var.vpc_id
 
@@ -39,7 +39,7 @@ resource "aws_security_group" "public" {
   }
 
   tags = {
-    Name = "${var.project}-public-sg"
+    Name = "${var.project}-public-sg-test"
     Tier = "public"
   }
 }
@@ -48,7 +48,7 @@ resource "aws_security_group" "public" {
 # 2. Private Security Group
 #####################################
 resource "aws_security_group" "private" {
-  name        = "${var.project}-private-sg"
+  name        = "${var.project}-private-sg-test"
   description = "Allow internal traffic and internet via NAT"
   vpc_id      = var.vpc_id
 
@@ -69,7 +69,7 @@ resource "aws_security_group" "private" {
   }
 
   tags = {
-    Name = "${var.project}-private-sg"
+    Name = "${var.project}-private-sg-test"
     Tier = "private"
   }
 }
