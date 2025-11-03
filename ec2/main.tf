@@ -16,7 +16,7 @@ data "aws_ami" "amazon_linux_2" {
 #####################################
 resource "aws_key_pair" "main" {
   key_name   = "${var.project}-key"
-  public_key = file(var.public_key_path) # məsələn: "/home/broops/.ssh/id_rsa.pub"
+  public_key = file(var.public_key_path)
 }
 
 #####################################

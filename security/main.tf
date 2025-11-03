@@ -2,7 +2,7 @@
 # 1. Public Security Group
 #####################################
 resource "aws_security_group" "public" {
-  name        = "${var.project}-public-sg-test"
+  name        = "${var.project}-public-sg"
   description = "Allow SSH, HTTP, HTTPS access from anywhere"
   vpc_id      = var.vpc_id
 
@@ -39,7 +39,7 @@ resource "aws_security_group" "public" {
   }
 
   tags = {
-    Name = "${var.project}-public-sg-test"
+    Name = "${var.project}-public-sg"
     Tier = "public"
   }
 }
@@ -48,20 +48,20 @@ resource "aws_security_group" "public" {
 # 2. Private Security Group
 #####################################
 resource "aws_security_group" "private" {
-  name        = "${var.project}-private-sg-test"
+  name        = "${var.project}-private-sg"
   description = "Allow internal traffic and internet via NAT"
   vpc_id      = var.vpc_id
 
   ingress {
     description    = "Allow traffic from public SG"
-    from_port       = 0
-    to_port         = 0
-    protocol        = "-1"
+    from_port      = 0
+    to_port        = 0
+    protocol       = "-1"
     security_groups = [aws_security_group.public.id]
   }
 
   egress {
-    description = "Allow outbound to internet via NAT"
+    description = "Allow all outbound traffic"
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
@@ -69,7 +69,7 @@ resource "aws_security_group" "private" {
   }
 
   tags = {
-    Name = "${var.project}-private-sg-test"
+    Name = "${var.project}-private-sg"
     Tier = "private"
   }
 }
